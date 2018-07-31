@@ -8,7 +8,7 @@
  */
 public class Elevator {
     private int currentFloor, elevatorState;
-    public final int IDLE = -1,TO_SOURCE = -2,TO_DESTINATION = -3;
+    private final int IDLE = -1,TO_SOURCE = -2,TO_DESTINATION = -3;
     Request request;
 
     /**
@@ -90,7 +90,12 @@ public class Elevator {
             state = "TO_SOURCE";
         else if(elevatorState == TO_DESTINATION)
             state = "TO_DEST";
-        String answer = "[FLOOR: " + currentFloor + ", " + state + ", " + request.toString() + "]" ;
+        String requestString;
+        if(request == null)
+            requestString = "------";
+        else
+            requestString = request.toString();
+        String answer = "[FLOOR: " + currentFloor + ", " + state + ", " + requestString + "]" ;
         return answer;
     }
 }

@@ -12,9 +12,7 @@ import java.util.Vector;
 /**
  *
  */
-public class RequestQueue extends Vector implements Cloneable{
-    private final int MAX_CAPACITY = 50;
-    private Vector <Request> requestQueue;
+public class RequestQueue extends Vector {
     private int front,rear;
 
     /**
@@ -22,41 +20,6 @@ public class RequestQueue extends Vector implements Cloneable{
      */
     public RequestQueue(){
         front = -1;
-        rear = -1;
-        requestQueue = new Vector<Request>(MAX_CAPACITY);
-    }
-
-    /**
-     *
-     * @param requestQueue
-     */
-    public void setRequestQueue(Vector<Request> requestQueue) {
-        this.requestQueue = requestQueue;
-    }
-
-    /**
-     *
-     * @param front
-     */
-    public void setFront(int front) {
-        this.front = front;
-    }
-
-    /**
-     *
-     * @param rear
-     */
-    public void setRear(int rear) {
-        this.rear = rear;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public Vector<Request> getRequestQueue() {
-
-        return requestQueue;
     }
 
     /**
@@ -69,27 +32,15 @@ public class RequestQueue extends Vector implements Cloneable{
 
     /**
      *
-     * @return
-     */
-    public int getRear() {
-        return rear;
-    }
-
-    /**
-     *
      * @param newRequest
      */
-    public void enqueue(Request newRequest) throws FullQueueException{
-        if(requestQueue.isEmpty()){
+    public void enqueue(Request newRequest) {
+        if(this.size() == 0){
             front = 0;
-            rear = front;
-            requestQueue.add(newRequest);
-        }
-        else if(requestQueue.size() >= MAX_CAPACITY) {
-            throw new FullQueueException();
+            this.add(newRequest);
         }
         else{
-            requestQueue.add(++rear,newRequest);
+            this.add(this.size(),newRequest);
         }
     }
 
@@ -100,20 +51,30 @@ public class RequestQueue extends Vector implements Cloneable{
      */
     public Request dequeue() throws EmptyQueueException{
         Request answer;
-        if(requestQueue.isEmpty()){
+        if(this.isEmpty()){
             throw new EmptyQueueException();
         }
-        answer = requestQueue.get(front);
+        else {
+            answer = (Request) this.get(front);
+            this.remove(front);
+        }
         return answer;
     }
 
     /**
      *
-     * @param index
      * @return
      */
-    public Request getRequest(int index){
-        return requestQueue.get(index);
+    @Override
+    public String toString(){
+        StringBuilder answer = new StringBuilder();
+        for(int i = 0; i < this.size();i++){
+            if(this.get(i) == null)
+                break;
+            Request requestAtIndex = (Request) this.get(i);
+            answer.append(requestAtIndex.toString());
+        }
+        return answer.toString();
     }
 
 
