@@ -13,26 +13,27 @@ import java.util.Vector;
  *
  */
 public class RequestQueue extends Vector {
-    private int front,rear;
+    private int front;
 
     /**
-     *
+     * Constructs an instance of RequestQueue with the front of the queue initialized to not be part of the queue.
      */
     public RequestQueue(){
         front = -1;
     }
 
     /**
-     *
+     * Gets the int index of the front of the queue of this RequestQueue
      * @return
+     * Returns the front index of this RequestQueue
      */
     public int getFront() {
         return front;
     }
 
     /**
-     *
-     * @param newRequest
+     * Enqueues a new Request object onto the RequestQueue to be picked up by an elevator.
+     * @param newRequest - new Request to be enqueued to the RequestQueue
      */
     public void enqueue(Request newRequest) {
         if(this.size() == 0){
@@ -48,6 +49,7 @@ public class RequestQueue extends Vector {
      *
      * @return
      * @throws EmptyQueueException
+     * Preconditions: The RequestQueue has at least one element in the queue
      */
     public Request dequeue() throws EmptyQueueException{
         Request answer;

@@ -7,7 +7,9 @@
  *    July 25th, 2018
  */
 
-//Class was copied from lecture slides
+/**Class was copied from lecture slides. This class creates a BooleanSource object to determine
+ * if a request happens in the Request class.
+ */
 public class BooleanSource {
     private double probability;
 

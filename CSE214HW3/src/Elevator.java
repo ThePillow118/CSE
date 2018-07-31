@@ -6,6 +6,10 @@
  * Date:
  *    July 25th, 2018
  */
+
+/**
+ *
+ */
 public class Elevator {
     private int currentFloor, elevatorState;
     private final int IDLE = -1,TO_SOURCE = -2,TO_DESTINATION = -3;

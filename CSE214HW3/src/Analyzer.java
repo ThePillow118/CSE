@@ -14,7 +14,7 @@ public class Analyzer {
         Scanner in = new Scanner(System.in);
         System.out.println("Welcome to Elevator Simulator 2018!");
         System.out.println();
-       /** System.out.println("Please enter the probability of arrival for Requests: ");
+        System.out.println("Please enter the probability of arrival for Requests: ");
         double prob = in.nextDouble();
         System.out.println("Please enter the number of floors: ");
         int floors = in.nextInt();
@@ -22,8 +22,7 @@ public class Analyzer {
         int elevators = in.nextInt();
         System.out.println("Please enter the length of the simulation (in time units): ");
         int simLength = in.nextInt();
-        */
-        Simulator.Simulate(.5,3,2,10);
+        Simulator.Simulate(prob,floors,elevators,simLength);
     }
 
 }
