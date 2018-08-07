@@ -1,4 +1,6 @@
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 /**
  * @author
@@ -10,47 +12,67 @@ import java.io.*;
  */
 public class TreeDriver {
 
-    public static void main(String[] args){
-        String lol = "root 3";
-        System.out.println(Integer.parseInt(lol.substring(lol.length()-1)));
+    public static void main(String[] args) {
+        Tree myTree = loadTree("C:\\Users\\Joe\\Desktop\\CS.txt");
+        myTree.preOrder(myTree.getRoot());
+        /*Scanner in = new Scanner(System.in);
+        printMenu();
+        String choice = in.nextLine();
+        if(choice.toUpperCase().charAt(0) == 'L'){
+            String path;
+            System.out.println("Enter file path: ");
+            path = in.nextLine();
+            Tree currentTree = loadTree(path);
+            if(currentTree == null)
+                System.out.println("Unable to load tree.");
+        }*/
+        //myTree.preOrder(myTree.getRoot());
     }
 
-    public Tree loadTree(){
+    public static void printMenu(){
+        System.out.println("L - Load a Tree\nH - Begin a Help Session\nTraverse the Tree in preorder\nQ - Quit\n " +
+                "Choice: ");
+    }
+
+    public static Tree loadTree(String filePath){
         Tree newTree = new Tree();
         try{
-            FileInputStream in = new FileInputStream("C:\\Users\\JoePillow\\Desktop\\cseHw.txt");
-            DataInputStream input = new DataInputStream(in);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            String line;
-            String[] lines = new String[in.available()];
-            int x = 0;
-            while((line = br.readLine()) != null){
-                lines[x] = line;
-                x++;
-            }
-            input.close();
-            if(!lines[0].equals("root"))
+            File file =  new File(filePath);
+            String line,label, prompt, message;
+            Scanner scan = new Scanner(file);
+            line = scan.nextLine().trim();
+            if(!line.equals("root"))
                 return null;
-            int index = 0;
-            String label = lines[index];
-            String message = lines[++index];
-            int children = Integer.parseInt(lines[++index].substring(lines[index].length()-1));
-            newTree.addNode(label,label,message,label);
-
-            while(index <= x){
-
-                for(int i = 0; i < children;i++){
-                    String childLabel = lines[++index];
-                    String childPrompt = lines[++index];
-                    String childMessage = lines[++index];
-                    newTree.getNodeReference(label).setChild(i,new TreeNode(childLabel,childMessage,childPrompt));
-                }
-
+            else{
+                label = line;
+                prompt = scan.nextLine().trim();
+                message = scan.nextLine().trim();
+                newTree.addNode(label,prompt,"","");
             }
+
+            while(scan.hasNextLine()){
+                TreeNode parent = newTree.getRoot();
+                line = scan.nextLine().trim();
+                String lineLabel = line.substring(0,line.length()-2);
+                String lineNumChildren = line.substring(line.length()-1);
+                int lineChildren = Integer.parseInt(line.substring(line.length()-1));
+                parent = newTree.getNodeReference(lineLabel);
+                if(parent != null){
+                    int numberOfChildren = lineChildren;
+                    for(int i = 0;i < numberOfChildren;i++){
+                        label = scan.nextLine().trim();
+                        prompt = scan.nextLine().trim();
+                        message = scan.nextLine().trim();
+                        newTree.addNode(label,prompt,message,lineLabel);
+                    }
+                }
+            }
+            scan.close();
         }
-        catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
+        catch (FileNotFoundException e) {
+            System.out.println("Path was invalid. Please try again.");
         }
         return newTree;
     }
+
 }

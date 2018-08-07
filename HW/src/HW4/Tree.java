@@ -88,24 +88,26 @@ public class Tree {
            if(root.getChildren()[0] == null){
                root.setChild(0,newNode);
                added = true;
+               return added;
            }
            else if(root.getChildren()[1] == null){
                root.setChild(1,newNode);
                added = true;
+               return added;
            }
            else if(root.getChildren()[2] == null){
                root.setChild(2,newNode);
                added = true;
+               return added;
            }
-           return added;
         }
         if(root.getChildren()[0] != null)
             addNode(root.getChildren()[0],newNode,parentLabel);
-        else if(root.getChildren()[1] != null)
+        if(root.getChildren()[1] != null)
             addNode(root.getChildren()[1],newNode,parentLabel);
-        else if(root.getChildren()[2] != null)
+        if(root.getChildren()[2] != null)
             addNode(root.getChildren()[2],newNode,parentLabel);
-        return added;
+        return false;
     }
 
     /**
