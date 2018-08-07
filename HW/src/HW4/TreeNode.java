@@ -5,6 +5,10 @@
  * Homework #4 for CSE 214, Summer 2018
  * Date:
  * August 2nd 2018
+ *
+ * A class to be used in the Tree class in order to build a tree. This class contains all
+ * the information in a node that includes its label, message, prompt, and any children that it
+ * has.
  */
 public class TreeNode {
     private TreeNode[] children;

@@ -5,6 +5,9 @@
  * Homework #4 for CSE 214, Summer 2018
  * Date:
  * August 2nd 2018
+ *
+ * Creates a Tree data structure that has a reference to the root node. This uses the TreeNode class
+ * to add nodes to the tree and continuously build it. This class only traverses the tree in preorder.
  */
 import java.util.Scanner;
 public class Tree {

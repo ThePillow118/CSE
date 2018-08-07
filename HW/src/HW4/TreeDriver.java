@@ -9,6 +9,17 @@ import java.util.Scanner;
  * Homework #4 for CSE 214, Summer 2018
  * Date:
  * August 2nd 2018
+ *
+ *
+ * Main driver class for creating a Tree based off of an input file. Allows a user to choose from a
+ * menu and the class performs certain operations based off the input given. The following list of menu
+ * options are given:
+ *
+ * Load a tree:                             L
+ * Begin a help session:                    H
+ * Traverse the tree in preorder:           T
+ * Quit:                                    Q
+ *
  */
 public class TreeDriver {
 
