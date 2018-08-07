@@ -13,32 +13,72 @@ import java.util.Scanner;
 public class TreeDriver {
 
     public static void main(String[] args) {
-        Tree myTree = loadTree("C:\\Users\\Joe\\Desktop\\CS.txt");
-        myTree.preOrder(myTree.getRoot());
-        /*Scanner in = new Scanner(System.in);
-        printMenu();
-        String choice = in.nextLine();
-        if(choice.toUpperCase().charAt(0) == 'L'){
-            String path;
-            System.out.println("Enter file path: ");
-            path = in.nextLine();
-            Tree currentTree = loadTree(path);
-            if(currentTree == null)
-                System.out.println("Unable to load tree.");
-        }*/
-        //myTree.preOrder(myTree.getRoot());
+        Tree currentTree = null;
+        Scanner in = new Scanner(System.in);
+        boolean quit = false;
+        while(quit == false) {
+            printMenu();
+            String choice = in.nextLine();
+            switch (choice.toUpperCase().charAt(0)) {
+                case 'L':
+                    String path;
+                    System.out.println("Enter file path: ");
+                    path = in.nextLine();
+                    currentTree = loadTree(path);
+                    if (currentTree == null)
+                        System.out.println("Unable to load tree.");
+                    else
+                        System.out.println("Tree created successfully!");
+                    break;
+
+                case 'H':
+                    if(currentTree == null)
+                        System.out.println("No tree loaded. Please load a tree first.");
+                    else {
+                        currentTree.beginSession();
+                    }
+                    break;
+
+                case 'T':
+                    currentTree.preOrder(currentTree.getRoot());
+                    break;
+
+                case 'Q':
+                    System.out.println("Thanks for using the service!");
+                    quit = true;
+                    break;
+
+                default:
+                    System.out.println("Please try a letter from the menu.");
+                    break;
+            }
+            System.out.println();
+        }
     }
 
+    /**
+     * Prints a menu for use in the main method for the user to choose an option from
+     */
     public static void printMenu(){
-        System.out.println("L - Load a Tree\nH - Begin a Help Session\nTraverse the Tree in preorder\nQ - Quit\n " +
+        System.out.println("L - Load a Tree\nH - Begin a Help Session\nT - Traverse the Tree in preorder\nQ - Quit\n" +
                 "Choice: ");
     }
 
+    /**
+     * Loads a tree given a file that contains information in a particular format,line by line descriptions of
+     * what each node contains and how many children each node has. This creates a tree that can be used
+     * in the main method.
+     * @param filePath - path in the computer's storage that has the file
+     * @return
+     * Returns null if the file could not be loaded or the file's first line does not contain "root". Otherwise
+     * it will return the tree version of the given file
+     */
     public static Tree loadTree(String filePath){
         Tree newTree = new Tree();
         try{
             File file =  new File(filePath);
             String line,label, prompt, message;
+            int children;
             Scanner scan = new Scanner(file);
             line = scan.nextLine().trim();
             if(!line.equals("root"))
@@ -47,25 +87,30 @@ public class TreeDriver {
                 label = line;
                 prompt = scan.nextLine().trim();
                 message = scan.nextLine().trim();
-                newTree.addNode(label,prompt,"","");
+                line = scan.nextLine().trim();
+                children = Integer.parseInt(line.substring(line.length()-1));
+                newTree.addNode(label,prompt,message,children,"");
             }
 
             while(scan.hasNextLine()){
                 TreeNode parent = newTree.getRoot();
-                line = scan.nextLine().trim();
                 String lineLabel = line.substring(0,line.length()-2);
                 String lineNumChildren = line.substring(line.length()-1);
-                int lineChildren = Integer.parseInt(line.substring(line.length()-1));
-                parent = newTree.getNodeReference(lineLabel);
+                children = Integer.parseInt(line.substring(line.length()-1));
+                parent = newTree.getNodeReference(lineLabel,parent);
                 if(parent != null){
-                    int numberOfChildren = lineChildren;
-                    for(int i = 0;i < numberOfChildren;i++){
+                    for(int i = 0;i < children;i++){
                         label = scan.nextLine().trim();
                         prompt = scan.nextLine().trim();
                         message = scan.nextLine().trim();
-                        newTree.addNode(label,prompt,message,lineLabel);
+                        TreeNode newNode = new TreeNode(label,message,prompt,children);
+                        newTree.addNode(parent,newNode,lineLabel);
                     }
                 }
+                if(scan.hasNextLine())
+                    line = scan.nextLine().trim();
+                else
+                    break;
             }
             scan.close();
         }

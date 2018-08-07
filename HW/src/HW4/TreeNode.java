@@ -23,8 +23,8 @@ public class TreeNode {
      * @param message - messagae of this TreeNode
      * @param prompt - prompt of this TreeNode
      */
-    public TreeNode(String label, String message, String prompt) {
-        children = new TreeNode[3];
+    public TreeNode(String label, String message, String prompt, int numChildren) {
+        children = new TreeNode[numChildren];
         this.label = label;
         this.prompt = prompt;
         this.message = message;

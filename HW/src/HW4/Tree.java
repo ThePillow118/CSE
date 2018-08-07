@@ -6,6 +6,7 @@
  * Date:
  * August 2nd 2018
  */
+import java.util.Scanner;
 public class Tree {
 
     private TreeNode root;
@@ -40,13 +41,10 @@ public class Tree {
      */
     public void preOrder(TreeNode root){
         System.out.println(root.toString());
-        if(root.getChildren()[0] != null)
-            preOrder(root.getChildren()[0]);
-        if(root.getChildren()[1] != null)
-            preOrder(root.getChildren()[1]);
-        if(root.getChildren()[2] != null)
-            preOrder(root.getChildren()[2]);
-
+        for(int i = 0; i < root.getChildren().length;i++) {
+            if (root.getChildren()[i] != null)
+                preOrder(root.getChildren()[i]);
+        }
     }
     /**
      * A method to add a TreeNode to the tree. The location will be a child of parentLabel. The child node will be
@@ -56,13 +54,13 @@ public class Tree {
      * @param prompt - prompt for the TreeNode to be added
      * @param message - message for the TreeNode to be added
      * @param parentLabel - parent name for the TreeNode to be added
+     * @param numChildren - number of children for this TreeNode
      * @return
      * A return value of true indicates that the node was successfully added to the tree. Otherwise, the return value
      * is false.
      */
-    public boolean addNode(String label, String prompt, String message, String parentLabel){
-        TreeNode newNode = new TreeNode(label,message,prompt);
-        TreeNode ptr;
+    public boolean addNode(String label, String prompt, String message,int numChildren, String parentLabel){
+        TreeNode newNode = new TreeNode(label,message,prompt,numChildren);
         if(root == null){
             root = newNode;
             return true;
@@ -85,29 +83,21 @@ public class Tree {
     public boolean addNode(TreeNode root, TreeNode newNode, String parentLabel){
         boolean added = false;
         if(parentLabel.equals(root.getLabel())){
-           if(root.getChildren()[0] == null){
-               root.setChild(0,newNode);
-               added = true;
-               return added;
-           }
-           else if(root.getChildren()[1] == null){
-               root.setChild(1,newNode);
-               added = true;
-               return added;
-           }
-           else if(root.getChildren()[2] == null){
-               root.setChild(2,newNode);
-               added = true;
-               return added;
-           }
+            for(int i = 0; i < root.getChildren().length;i++) {
+                if (root.getChildren()[i] == null) {
+                    root.setChild(i, newNode);
+                    added = true;
+                    return added;
+                }
+            }
         }
-        if(root.getChildren()[0] != null)
-            addNode(root.getChildren()[0],newNode,parentLabel);
-        if(root.getChildren()[1] != null)
-            addNode(root.getChildren()[1],newNode,parentLabel);
-        if(root.getChildren()[2] != null)
-            addNode(root.getChildren()[2],newNode,parentLabel);
-        return false;
+        else{
+            for(int i = 0; i < root.getChildren().length; i++) {
+                if (root.getChildren()[i] != null && added != true)
+                    added = addNode(root.getChildren()[i], newNode, parentLabel);
+            }
+        }
+        return added;
     }
 
     /**
@@ -143,17 +133,42 @@ public class Tree {
             return found;
         }
         else{
-            if(root.getChildren()[0] != null && found == null) {
-                found = getNodeReference(label, root.getChildren()[0]);
-            }
-            if(root.getChildren()[1] != null && found == null) {
-                found = getNodeReference(label, root.getChildren()[1]);
-            }
-            if(root.getChildren()[2] != null && found == null) {
-                found = getNodeReference(label, root.getChildren()[2]);
+            for(int i = 0; i < root.getChildren().length; i++) {
+                if (root.getChildren()[i] != null && found == null) {
+                    found = getNodeReference(label, root.getChildren()[i]);
+                }
             }
         }
         return found;
+    }
+
+    /**
+     * Begins the helping session for this Tree which takes input from the user and
+     * prints out the designated helping statements for what the user enters.
+     */
+    public void beginSession(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Help Session Started.");
+        TreeNode ptr = root;
+        String choiceString;
+        int choiceNum = -1;
+        while(!ptr.isLeaf() &&  choiceNum != 0){
+            System.out.println(ptr.getMessage());
+            for(int i = 0; i < ptr.getChildren().length; i++){
+                if(ptr.getChildren()[i] != null)
+                    System.out.println((i+1) + ") " + ptr.getChildren()[i].getPrompt());
+            }
+            System.out.println("0) Exit Session\nChoice> ");
+            choiceString = input.nextLine().toUpperCase().substring(0,1);
+            choiceNum = Integer.parseInt(choiceString);
+            ptr = ptr.getChildren()[choiceNum -1];
+            if(ptr.isLeaf()){
+                System.out.println(ptr.getMessage());
+                System.out.println();
+                System.out.println("Thank you for using this automated helping service.");
+            }
+        }
+
     }
     /**
      * Checks to see if the tree is empty.
