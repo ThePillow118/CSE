@@ -8,7 +8,9 @@
  */
 
 /**
- *
+ * Elevator class that is to be used in the simulation class. An elevator has three states, IDLE, TO_SOURCE,
+ * and TO_DESTINATION. The Elevator's current state and current floor determines which direction, up or down, it
+ * will move.
  */
 public class Elevator {
     private int currentFloor, elevatorState;

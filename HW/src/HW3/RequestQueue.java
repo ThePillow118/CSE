@@ -10,7 +10,10 @@ import java.util.Vector;
  */
 
 /**
- *
+ * The RequestQueue is a regular queue that extends the Vector class in order to utilize all of the capabilities
+ * of the Vector class to implement a queue. This queue has a reference to the front which is the first element of
+ * the queue. This class is used to store Requests that are waiting to be handled by Elevator(s) in the Simulator
+ * class.
  */
 public class RequestQueue extends Vector {
     private int front;
@@ -46,37 +49,21 @@ public class RequestQueue extends Vector {
     }
 
     /**
-     *
+     * Dequeues/removes the first item in the queue and returns the Request that was removed
      * @return
-     * @throws EmptyQueueException
+     * The return value is null if there is no request in the queue or the first Reqeust in the queue
      * Preconditions: The RequestQueue has at least one element in the queue
      */
-    public Request dequeue() throws EmptyQueueException{
+    public Request dequeue(){
         Request answer;
         if(this.isEmpty()){
-            throw new EmptyQueueException();
+            return null;
         }
         else {
             answer = (Request) this.get(front);
             this.remove(front);
         }
         return answer;
-    }
-
-    /**
-     *
-     * @return
-     */
-    @Override
-    public String toString(){
-        StringBuilder answer = new StringBuilder();
-        for(int i = 0; i < this.size();i++){
-            if(this.get(i) == null)
-                break;
-            Request requestAtIndex = (Request) this.get(i);
-            answer.append(requestAtIndex.toString());
-        }
-        return answer.toString();
     }
 
 

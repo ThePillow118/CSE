@@ -6,6 +6,12 @@
  * Date:
  *    July 25th, 2018
  */
+
+/**
+ * The Request class has information regarding where a request is coming from, sourceFloor, where the request wants
+ * to go, destinationFloor, and the time that the request was entered, timeEntered. This class is to be used in the
+ * Simulator and Elevator class in order to handle where the elevator moves and determine wait times for simulations.
+ */
 public class Request implements Cloneable{
 
     private int sourceFloor,destinationFloor,timeEntered;
@@ -73,8 +79,4 @@ public class Request implements Cloneable{
         this.timeEntered = timeEntered;
     }
 
-    @Override
-    public String toString() {
-        return ("(" + sourceFloor + ", " + destinationFloor + ", " + timeEntered + ")");
-    }
 }
