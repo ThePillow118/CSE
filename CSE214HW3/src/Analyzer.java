@@ -11,7 +11,7 @@ import java.util.Scanner;
 public class Analyzer {
 
     public static void main(String[] args){
-        Scanner in = new Scanner(System.in);
+        /**Scanner in = new Scanner(System.in);
         System.out.println("Welcome to Elevator Simulator 2018!");
         System.out.println();
         System.out.println("Please enter the probability of arrival for Requests: ");
@@ -22,7 +22,15 @@ public class Analyzer {
         int elevators = in.nextInt();
         System.out.println("Please enter the length of the simulation (in time units): ");
         int simLength = in.nextInt();
-        Simulator.Simulate(prob,floors,elevators,simLength);
+         */
+        //Simulator.Simulate(prob,floors,elevators,simLength);
+        int max = 0;
+        for(int i = 0; i < 1000;i++) {
+            int random = (int)(Math.random()*12 + 3.0);
+            if(max < random )
+                max = random;
+        }
+        System.out.println(max);
     }
 
 }
