@@ -104,9 +104,10 @@ public class TreeDriver {
             }
 
             while(scan.hasNextLine()){
+                if(line.equals(""))
+                    line = scan.nextLine().trim();
                 TreeNode parent = newTree.getRoot();
                 String lineLabel = line.substring(0,line.length()-2);
-                String lineNumChildren = line.substring(line.length()-1);
                 children = Integer.parseInt(line.substring(line.length()-1));
                 parent = newTree.getNodeReference(lineLabel,parent);
                 if(parent != null){

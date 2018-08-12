@@ -153,7 +153,6 @@ public class Tree {
         Scanner input = new Scanner(System.in);
         System.out.println("Help Session Started.");
         TreeNode ptr = root;
-        String choiceString;
         int choiceNum = -1;
         while(!ptr.isLeaf() &&  choiceNum != 0){
             System.out.println(ptr.getMessage());
@@ -162,8 +161,7 @@ public class Tree {
                     System.out.println((i+1) + ") " + ptr.getChildren()[i].getPrompt());
             }
             System.out.println("0) Exit Session\nChoice> ");
-            choiceString = input.nextLine().toUpperCase().substring(0,1);
-            choiceNum = Integer.parseInt(choiceString);
+            choiceNum = input.nextInt();
             ptr = ptr.getChildren()[choiceNum -1];
             if(ptr.isLeaf()){
                 System.out.println(ptr.getMessage());

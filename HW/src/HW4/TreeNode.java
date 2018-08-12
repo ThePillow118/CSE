@@ -10,6 +10,7 @@
  * the information in a node that includes its label, message, prompt, and any children that it
  * has.
  */
+
 public class TreeNode {
     private TreeNode[] children;
     private String label, message, prompt;
@@ -17,6 +18,7 @@ public class TreeNode {
     /**
      * Creates an instance of TreeNode with no parameters and intializes the children of the node to empty TreeNodes.
      */
+
     public TreeNode(){
 
     }
@@ -121,6 +123,8 @@ public class TreeNode {
         }
         return true;
     }
+
+
 
     /**
      * String representation of this TreeNode
