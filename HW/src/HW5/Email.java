@@ -185,13 +185,10 @@ public class Email implements Serializable {
     };
 
     public String formatCal(){
-        SimpleDateFormat format = new SimpleDateFormat();
+        SimpleDateFormat format = new SimpleDateFormat("h:mma dd/MM/yyyy");
         format.setCalendar(timestamp);
-        return format.toString();
+        String dateFormat = format.format(timestamp.getTime());
+        return dateFormat;
     }
 
-    @Override
-    public String toString() {
-        return String.format("%3| %3s | %3s",timestamp.toString(),subject);
-    }
 }

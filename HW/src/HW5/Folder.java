@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * @author
@@ -16,16 +17,13 @@ import java.util.ArrayList;
 public class Folder implements Serializable {
     private ArrayList<Email> emails;
     private String name,currentSortingMethod;
-
-    public Folder(ArrayList<Email> emails, String name, String currentSortingMethod) {
-        this.emails = emails;
-        this.name = name;
-        this.currentSortingMethod = currentSortingMethod;
-    }
+    public final String subAsc = "Subject Ascending",subDes = "Subject Descending",timeAsc = "Time Ascending",
+            timeDesc = "Time Descending";
 
     public Folder(String name) {
         this.name = name;
         emails = new ArrayList<>();
+        currentSortingMethod = timeDesc;
     }
 
     /**
@@ -80,7 +78,62 @@ public class Folder implements Serializable {
     }
 
     public void addEmail(Email email){
-
+        if(emails.isEmpty())
+            emails.add(email);
+        else {
+            switch (currentSortingMethod) {
+                case ("Subject Ascending"):
+                    for (int i = 0; i < emails.size(); i++) {
+                        if (email.getSubject().compareTo(emails.get(i).getSubject()) >= 0) {
+                            emails.add(i, email);
+                            break;
+                        }
+                        else if(i == emails.size()-1){
+                            emails.add(email);
+                            break;
+                        }
+                    }
+                    break;
+                case ("Subject Descending"):
+                    for (int i = 0; i < emails.size(); i++) {
+                        if (email.getSubject().compareTo(emails.get(i).getSubject()) <= 0) {
+                            emails.add(i, email);
+                            break;
+                        }
+                        else if(i == emails.size()-1){
+                            emails.add(email);
+                            break;
+                        }
+                    }
+                    break;
+                case ("Time Ascending"):
+                    for (int i = 0; i < emails.size(); i++) {
+                        if (email.getTimestamp().getTime().compareTo(emails.get(i).getTimestamp().getTime()) >= 0) {
+                           emails.add(i, email);
+                           break;
+                        }
+                        else if(i == emails.size()-1){
+                            emails.add(email);
+                            break;
+                        }
+                    }
+                    break;
+                case ("Time Descending"):
+                    for (int i = 0; i < emails.size(); i++) {
+                        if (email.getTimestamp().getTime().compareTo(emails.get(i).getTimestamp().getTime()) <= 0) {
+                            emails.add(i, email);
+                            break;
+                        }
+                        else if(i == emails.size()-1){
+                            emails.add(email);
+                            break;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     /**
@@ -106,19 +159,22 @@ public class Folder implements Serializable {
     public void sortBySubjectDescending(){
         emails.sort(Email.EmailsSubjectComparatorDescending);
     }
+
     public void sortByDateAscending(){
         emails.sort(Email.EmailsTimestampComparatorAscending);
     }
+
     public void sortByDateDescending(){
         emails.sort(Email.EmailsTimestampComparatorDescending);
     }
 
     @Override
     public String toString(){
-        String answer = "";
+        String answer = String.format("%s | %10s %8s %3s","Index","Time","|","Subject");
+        answer += "\n-----------------------------------";
         for(int i = 0; i < emails.size();i++){
             String date = emails.get(i).getTimestamp().toString();
-            answer += String.format("%n %d | %3s | %3s",i+1,emails.get(i).getTimestamp().toString(),emails.get(i).getSubject());
+            answer += String.format("%n  %-3d | %3s | %3s",i+1,emails.get(i).formatCal(),emails.get(i).getSubject());
         }
        return answer;
     }
