@@ -1,10 +1,11 @@
-import java.io.Serializable;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author
@@ -21,20 +22,57 @@ public class Mailbox implements Serializable {
     private ArrayList<Folder> folders;
 
     public static void main(String[] args){
-        Folder newFolder = new Folder("Inbox");
-        System.out.println("Date Ascending");
-        newFolder.addEmail(new Email("Me","","","Drugs","My Drogas"));
-        newFolder.addEmail(new Email("Me","","","Me","My Drogas"));
-        newFolder.addEmail(new Email("Me","","","Songs","My Drogas"));
-        newFolder.addEmail(new Email("Me","","","Aoki","My Drogas"));
-        newFolder.sortByDateDescending();
-        System.out.println(newFolder.toString());
-        newFolder.setCurrentSortingMethod("Subject Descending");
-        newFolder.sortBySubjectDescending();
-        System.out.println("\nSubject Descending");
-        System.out.println(newFolder.toString());
-        newFolder.removeEmail(1);
-        System.out.println(newFolder.toString());
+        Scanner in = new Scanner(System.in);
+        try{
+            FileInputStream file = new FileInputStream("myMailbox.obj");
+            ObjectInputStream fin = new ObjectInputStream(file);
+            mailbox = (Mailbox) fin.readObject();
+            file.close();
+        }
+        catch(IOException e){}
+        catch(ClassNotFoundException c){}
+        if(mailbox == null) {
+            System.out.println("No previous mailbox found, creating a new one.");
+            mailbox = new Mailbox();
+        }
+        System.out.println(mailbox.toString());
+        String choice = "";
+        while(true){
+            printMailboxMenu();
+            System.out.println("Enter an option: ");
+            switch (choice.toUpperCase().charAt(0)){
+                case 'A':
+                    break;
+                case 'R':
+                    break;
+                case'C':
+                    break;
+                case'F':
+                    printFolderMenu();
+                    Scanner input = new Scanner(System.in);
+                    System.out.println("Enter an option: ");
+                    break;
+                case'I':
+                    break;
+                case'T':
+                    break;
+                case'Q':
+                    break;
+            }
+        }
+        try{
+            FileOutputStream file = new FileOutputStream("myMailbox.obj");
+            ObjectOutputStream fout = new ObjectOutputStream(file);
+            fout.close();
+        }catch(IOException e){
+            System.out.println("ERROR");
+        }
+    }
+
+    public Mailbox() {
+        folders = new ArrayList<Folder>();
+        inbox = new Folder("Inbox");
+        trash = new Folder("Trash");
     }
 
     public void addFolder(Folder folder) throws ExistingFolderException{
@@ -72,8 +110,8 @@ public class Mailbox implements Serializable {
         System.out.println("Email successfully added.");
     }
 
-    public void deleteEmail(Email email){
-
+    public void deleteEmail(Email email)throws IllegalArgumentException{
+        moveEmail(email,trash);
     }
 
     /**
@@ -84,11 +122,51 @@ public class Mailbox implements Serializable {
     }
 
 
-    public void moveEmail(){
+    public void moveEmail(Email email,Folder target)throws IllegalArgumentException{
+        if(target == null || email == null)
+            throw new IllegalArgumentException();
+        else{
+            if(folders.indexOf(target) == -1) {
+                System.out.println("Folder not found.");
 
+            }
+            else{
+                target.addEmail(email);
+            }
+        }
     }
 
-    public Folder getFolder(){
-        return null;
+    public Folder getFolder(String name) throws IllegalArgumentException{
+        Folder answer = null;
+        if(name == null) {
+            throw new IllegalArgumentException();
+        }
+        for(int i = 0; i < folders.size();i++){
+            if(folders.get(i).getName().equals(name)) {
+                answer = folders.get(i);
+                break;
+            }
+
+        }
+        return answer;
+    }
+
+    public static void printFolderMenu(){
+        System.out.println("M - Move Email\nD - Delete Email\nV - View email contents" +
+                "\nSA - Sort by subject in ascending order\nSD - Sort by subject in descending order" +
+                "\nDA - Sort by date in ascending order\nDD - Sort by date in descending order\nR - Return to mailbox");
+    }
+
+    public static void printMailboxMenu(){
+        System.out.println("A - Add Folder\nR - Remove Folder\nC - Compose Email\nF - Open Folder\nI - Open Inbox" +
+                "\nT - Open Trash\nQ - Quit");
+    }
+
+    public String toString(){
+        String answer = "Mailbox:\n--------\n"+inbox.getName()+"\n"+trash.getName();
+        for(int i =0;i < folders.size();i++){
+            answer += ("\n" + folders.get(i).getName());
+        }
+        return answer;
     }
 }

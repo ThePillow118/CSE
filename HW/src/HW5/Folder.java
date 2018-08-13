@@ -1,6 +1,5 @@
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 /**
  * @author
@@ -170,7 +169,7 @@ public class Folder implements Serializable {
 
     @Override
     public String toString(){
-        String answer = String.format("%s | %10s %8s %3s","Index","Time","|","Subject");
+        String answer = String.format("%s | %10s %9s %3s","Index","Time","|","Subject");
         answer += "\n-----------------------------------";
         for(int i = 0; i < emails.size();i++){
             String date = emails.get(i).getTimestamp().toString();
