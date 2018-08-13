@@ -37,27 +37,86 @@ public class Mailbox implements Serializable {
         }
         System.out.println(mailbox.toString());
         String choice = "";
-        while(true){
+        boolean quit = false;
+        while(quit){
             printMailboxMenu();
             System.out.println("Enter an option: ");
             switch (choice.toUpperCase().charAt(0)){
                 case 'A':
+                    try {
+                        System.out.println("Enter folder name: ");
+                        String folderName = in.nextLine();
+                        mailbox.addFolder(new Folder(folderName));
+                    }
+                    catch(ExistingFolderException e){
+                        System.out.println("A folder with that name already exists.");
+                    }
                     break;
                 case 'R':
+                    System.out.println("Enter folder name: ");
+                    String folderName = in.nextLine();
+                    mailbox.deleteFolder(folderName);
                     break;
                 case'C':
+                    mailbox.composeEmail();
                     break;
                 case'F':
-                    printFolderMenu();
-                    Scanner input = new Scanner(System.in);
-                    System.out.println("Enter an option: ");
+                    System.out.println("Enter folder name: ");
+                    String folder = in.nextLine();
+                    boolean inFolder = true;
+                    Folder currentFolder = mailbox.getFolder(folder);
+                    if(currentFolder == null){
+                        System.out.println("The given folder name does not exist.");
+                    }
+                    else {
+                        while (inFolder) {
+                            System.out.println(currentFolder.getName());
+                            printFolderMenu();
+                            System.out.println("Enter an option: ");
+                            String folderChoice = "";
+                            switch (folderChoice.toUpperCase()) {
+                                case "M":
+                                    System.out.println("Enter the index of the email to move: ");
+                                    int index = in.nextInt();
+                                    System.out.println("Folders");
+                                    break;
+                                case "D":
+                                    break;
+                                case "V":
+                                    break;
+                                case "SA":
+                                    break;
+                                case "SD":
+                                    break;
+                                case "DA":
+                                    break;
+                                case "DD":
+                                    break;
+                                case "R":
+                                    inFolder = false;
+                                    break;
+                                default:
+                                    System.out.println("Enter a valid choice from the menu.");
+                                    break;
+                            }
+                        }
+                    }
+
                     break;
                 case'I':
+
                     break;
                 case'T':
                     break;
-                case'Q':
+                case'E':
+                    mailbox.clearTrash();
                     break;
+                case'Q':
+                    System.out.println("Thanks for using this Mailbox service!");
+                    quit = true;
+                    break;
+                default:
+                    System.out.println("Please enter a valid option.");
             }
         }
         try{
@@ -87,9 +146,15 @@ public class Mailbox implements Serializable {
         if(folders.isEmpty())
             System.out.println("There are no folders to delete.");
         else{
-            for(int i = 0; i < folders.size();i++){
-                if(folders.get(i).getName().equals(name))
+            for(int i = 0; i <= folders.size();i++){
+                if(i == folders.size()){
+                    System.out.println("Folder not found.");
+                    break;
+                }
+                if(folders.get(i).getName().equals(name)) {
                     folders.remove(i);
+                    break;
+                }
             }
         }
     }

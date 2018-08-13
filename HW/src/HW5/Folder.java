@@ -169,11 +169,16 @@ public class Folder implements Serializable {
 
     @Override
     public String toString(){
-        String answer = String.format("%s | %10s %9s %3s","Index","Time","|","Subject");
-        answer += "\n-----------------------------------";
-        for(int i = 0; i < emails.size();i++){
-            String date = emails.get(i).getTimestamp().toString();
-            answer += String.format("%n  %-3d | %3s | %3s",i+1,emails.get(i).formatCal(),emails.get(i).getSubject());
+        String answer;
+        if(emails.isEmpty())
+            answer = (name + " is empty.");
+        else {
+            answer = String.format("%s | %10s %9s %3s", "Index", "Time", "|", "Subject");
+            answer += "\n-----------------------------------";
+            for (int i = 0; i < emails.size(); i++) {
+                String date = emails.get(i).getTimestamp().toString();
+                answer += String.format("%n  %-3d | %3s | %3s", i + 1, emails.get(i).formatCal(), emails.get(i).getSubject());
+            }
         }
        return answer;
     }
